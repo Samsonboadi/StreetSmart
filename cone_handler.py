@@ -52,6 +52,20 @@ class ConeHandler():
                                                            srs, project_srs)
             self.create_and_draw_cone(transformed_point,
                                       rot, color)
+            
+    def center_map(self,point):
+
+        # Convert the QgsPointXY to a QgsGeometry object
+        geometry_feature = QgsGeometry.fromPointXY(point)
+
+        # Get the geometry of the clicked feature
+        #geometry = geometry_feature.geometry.geometry()
+        # Get the center point of the feature's bounding box
+        center_point = geometry_feature.boundingBox().center()
+
+        # Set the center of the map canvas to the center point
+        #canvas.setCenter(center_point)
+        self.iface.mapCanvas().setCenter(center_point)
 
     @log(logging.DEBUG, print_args=True, print_return=True)
     def _transform_cone_point(self, x, y, srs, to_srs):
@@ -103,6 +117,7 @@ class ConeHandler():
 
         self.__remove_previous_cone()
         points = self._create_cone_polyline(point)
+        self.center_map(point)
 
         # Rotate cone
         cone_geometry = QgsGeometry.fromPolygonXY(points)
@@ -116,3 +131,4 @@ class ConeHandler():
         cone.setWidth(CONE_BORDER_WIDTH)
 
         self.streetsmart.buttonstate.previous_cone = StreetSmart_Cone(cone, self.cone.srs)
+        self.iface.mapCanvas().refresh()

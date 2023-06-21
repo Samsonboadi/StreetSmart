@@ -71,6 +71,14 @@ class _LifespanHandler():  # pylint: disable=too-few-public-methods
         print("browser closed")
         self.cef_browser_closed = True
         return True
+    
+    def OnKeyEvent(self, browser, event, event_type, *args, **kwargs):
+        if event_type == cef.KEYEVENT_RAWKEYDOWN:
+            # Check for the Ctrl+C keyboard shortcut
+            if event["code"] == "KeyC" and event["modifiers"] == cef.EVENTFLAG_CTRL_DOWN:
+                # Get the selected text from the browser
+                browser.GetFocusedFrame().ExecuteJavascript("document.execCommand('copy');")
+        return False
 
 
 class _SendToQGIS():  # pylint: disable=too-few-public-methods
@@ -146,6 +154,8 @@ class PanoramaViewer():
                 "debug": True,
                 "log_severity": cef.LOGSEVERITY_VERBOSE,
                 "log_file": r"c:\temp\debug.log",
+                "uncaught_exception_stack_size": -1,
+                "ignore_certificate_errors": True,
             }
         else:
             settings = {}
