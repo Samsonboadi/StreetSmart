@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/plugins/street_smart" >
+        <file>resources/addRecordingWFS.png</file>
+        <file>resources/icon.png</file>
+        <file>resources/mActionAdd.svg</file>
+        <file>resources/mActionAllEdits.svg</file>
+        <file>resources/mActionDuplicateFeature.svg</file>
+        <file>resources/mActionHelpContents.svg</file>
+        <file>resources/mActionOptions.svg</file>
+        <file>resources/mActionRemove.svg</file>
+        <file>resources/mActionSelect.svg</file>
+        <file>resources/mActionShowAllLayers.svg</file>
+        <file>resources/overlay.svg</file>
+        <file>resources/settings.svg</file>
+    </qresource>
+</RCC>

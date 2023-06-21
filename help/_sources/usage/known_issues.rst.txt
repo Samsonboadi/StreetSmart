@@ -1,0 +1,12 @@
+Known Issues
+============
+
+- If you select a photo from the timeline in the viewer, the Recordings WFS will
+  continue to show the current recordings instead of the recordings at the time
+  of the choosen timeline.
+- If you install the plugin, a restart is needed in order to see the plugin
+  buttons in the toolbar.
+- If you have added a new measurement, it will only be displayed as an overlay if
+  you click the `add overlay` button again, or if you select a subsequent photo
+  in the viewer.
+

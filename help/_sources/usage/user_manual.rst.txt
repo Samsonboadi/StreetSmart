@@ -1,0 +1,158 @@
+User Guide
+==========
+
+The Street Smart plugin makes it possible to integrate the Cyclorama images
+from CycloMedia into QGIS. To this end, an additional window is shown with
+the images. This window is synchronized with what is shown in the canvas
+folder of QGIS.
+
+The Street Smart plugin for QGIS allows the user to:
+* add the recording locations of the Cycloramas as a WFS layer in QGIS,
+* create features QGIS for the measurements taken in Cycloramas;
+* show vector layers from QGIS as an overlay in the Cycloramas.
+
+In order to use all the features of the plugin, the user must have the
+necessary credentials to use the CycloMedia images. The user must enter these
+credentials in the login tab of the settings window.
+
+Toolbar
+-------
+
+The plugin adds a number of commands to QGIS. These commands can all be found
+in the menu of the plugin. A number of these commands can also be seen in the
+plugin toolbar.
+
+.. figure:: ../../../../doc/Toolbar.PNG
+   :alt: toolbar image
+
+   The buttons the plugin adds to the toolbar
+
+.. figure:: ../../../../doc/Menu.PNG
+   :alt: menu image
+
+   The commands which are added by the Street Smart plugin
+
+Add Atlas Recording WFS
+-----------------------
+
+This button adds a WFS layer to the current project with the currently valid
+CycloMedia recordings. The selection of the valid recordings is done through
+the following filter:
+
+   .. code:: sql
+
+      expiredAt is null
+
+The layer is placed at the top of the legend. The name of this layer is
+always 'CycloMedia Recordings'. No account is taken for any layers that have
+the same name. Furthermore, this button is always enabled.
+
+Select Cyclorama point
+----------------------
+
+This button allows you to select a recording on the canvas. The cyclorama of
+the selected recording is shown in the viewer. If the viewer is not yet open,
+it will be opened. If it was already open, the plugin shows the cyclorama in
+the same window. A cone is shown on the canvas map that indicates the viewing
+direction in the cyclorama. This button is enabled if an recording layer is
+added to the project.
+
+The panorama viewer is opened in the coordinate system of the mapCanvas. If the
+coordinate system of QGIS is changed, the crs of the viewer is held in the
+previous crs until a new panorama is selected in QGIS. Walking through
+different cycloramas thought the viewer keeps the crs in the previous state.
+
+Add an overlay to the cyclorama window
+--------------------------------------
+
+This button transfers the data from the visible layers around the cone to the
+viewer. This button is not enabled unless a viewer window is open.
+
+.. figure:: ../../../../doc/WithOverlay.PNG
+   :alt: Viewer with overlays
+   :figwidth: 50%
+
+   The viewer with some vector layers as overlay.
+
+The features shown are with 30 meters of the current Cyclorama. As long as the
+overlay button is checked, QGIS will send the features within the query
+distance around the cone to the viewer. The user can set the visiblity of the
+layers in the viewer.
+
+If a layer that was not visible in QGIS should still be sent to the viewer, the
+user must first make it visible. By toggling the overlay button, the additional
+layer is sent to the viewer.
+
+Create a measurement
+--------------------
+
+This button is a toggle. If this button is checked and a layer that is
+editable is selected, measurements made in the viewer are transferred to
+QGIS and added as a feature in the selected layer.
+
+The 'measurement' functionality allows the user to copy objects contained in
+the images into a QGIS layer. It does not matter whether the layer refers to a
+database or whether it is a so-called scratch layer.
+
+When the user turns on the measurement toggle, the appropriate measurement type
+is displayed in the cyclorama window depending on the layer type: for a point
+layer this is the location type, for a polyline layer this is the distance type
+and for a polygon layer this is the surface type.
+
+.. figure:: ../../../../doc/StartMeasurementLocation.PNG
+   :alt: Start a point measurement
+   :figwidth: 50%
+
+   The view when a point layer is selected in measurement mode.
+
+.. figure:: ../../../../doc/StartMeasurementDistance.PNG
+   :alt: Start a polyline measurement
+   :figwidth: 50%
+
+   The view when a polyline layer is selected in measurement mode.
+
+.. figure:: ../../../../doc/StartMeasurementSurface.PNG
+   :alt: Start a surface measurement
+   :figwidth: 50%
+
+   The view when a polygon layer is selected in measurement mode.
+
+At this point, the user can draw in the cyclorama and the points are
+transferred to the QGIS layer. For a point layer this already happens after the
+first point, for a line and an area layer 2 or 3 points must be indicated
+respectively.
+
+.. figure:: ../../../../doc/FirstPoint.PNG
+   :alt: Added a point feature
+
+   A point, selected in the Cyclorama viewer, is added to the QGIS layer.
+
+As long as new points are entered in the cylcorama window, the drawn object is
+changed. A new object is started by clicking on the measurement type in the
+cyclorama window. The storage of the objects in the QGIS layer is done in the
+standard QGIS way.
+
+.. figure:: ../../../../doc/BeforeSecondPointWithPointer.png
+   :alt: Prepare for a second point feature
+
+
+   By clicking on the measurement type, the first point is confirmed and QGIS
+   is ready for another point feature
+
+Settings
+--------
+
+This button displays a dialog window in which data such as user name,
+password and urls can be set.
+
+.. figure:: ../../../../doc/LoginSettings.PNG
+   :alt: Login Settings Tab
+   :figwidth: 50%
+
+   Window in which username and password must be set.
+
+.. figure:: ../../../../doc/ConfigurationSettings.PNG
+   :alt: Configuration Settings Tab
+   :figwidth: 50%
+
+   Window in which urls for StreetSmart api and proxy can be set.

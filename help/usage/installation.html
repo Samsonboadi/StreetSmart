@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Installation &#8212; Street Smart QGIS plugin $TAG$ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Guide" href="user_manual.html" />
+    <link rel="prev" title="Index" href="../index.html" /> 
+  </head><body>
+      <div class="header" role="banner"><img class="rightlogo" src="../_static/Merkator_Simple_Transparent_No_Gradient_Web.png" alt="Logo"/><h1 class="heading"><a href="../index.html">
+          <span>Street Smart plugin</span></a></h1>
+        <h2 class="heading"><span>Installation</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="../index.html">Index</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="user_manual.html">User Guide</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<p>The installation of the QGIS Street Smart plugin is done through the standard
+QGIS plugin installation mechanism. In the Plugins menu, go to the ‘Manage and
+Install plugins…’ option.</p>
+<figure class="align-default" id="id1">
+<img alt="Install Plugin from zip file." src="../_images/PluginInstallFromZip.PNG" />
+<figcaption>
+<p><span class="caption-text">Select the ‘Install from ZIP’ option and go to the folder where the zip file
+is located.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Once the plugin is installed, check if the plugin is enabled. The plugin can be
+found in the installed plugins tab. The checkbox in front of the StreetSmart
+plugin must be checked.</p>
+<figure class="align-default" id="id2">
+<img alt="Enable the StreetSmart plugin." src="../_images/InstalledStreetSmartPlugin.PNG" />
+<figcaption>
+<p><span class="caption-text">Enable the plugin in the installed plugins tab.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Finally, restart QGIS so that you have all the functionality of the plugin
+available.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
+<p>For the moment, the plugin only works on Windows 10. The following verions of
+QGIS are supported: 3.10.14 LTS, 3.16.10 LTS, and 3.20.2.</p>
+<p>To use the Street Smart plugin, three Python modules must be available in the
+QGIS environment, namely: cefpython3, geojson and shapely. An administrator can
+install these modules. If these are not yet installed, the plugin will install
+the modules when it first runs. The user must have the necessary rights to
+install these modules.</p>
+<p>The module cefpython3 needs Python version 2.7 or a Python version between 3.4
+and 3.9 both included. On Windows, this is not an issue because a valid python
+version is installed together with QGIS.</p>
+<p>The plugin makes use of the StreetSmart API. Therefore, to view the CycloMedia
+Imagery, a license with CycloMedia is needed.</p>
+</section>
+<section id="proxy-server">
+<h2>Proxy Server<a class="headerlink" href="#proxy-server" title="Permalink to this heading">¶</a></h2>
+<p>The plugin can be used behind a proxy server. Once installed, the plugin must
+have access to the following URIs:</p>
+<ul class="simple">
+<li><p>unpkg.com</p></li>
+<li><p>cdnjs.cloudflare.com</p></li>
+<li><p>atlas.cyclomedia.com</p></li>
+<li><p>atlas1.cyclomedia.com</p></li>
+<li><p>atlas2.cyclomedia.com</p></li>
+<li><p>atlas3.cyclomedia.com</p></li>
+<li><p>atlas4.cyclomedia.com</p></li>
+<li><p>streetsmart.cyclomedia.com</p></li>
+</ul>
+</section>
+</section>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="../index.html">Index</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="user_manual.html">User Guide</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Merkator B.V..
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>
