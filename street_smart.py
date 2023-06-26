@@ -47,6 +47,9 @@ from qgis.core import (QgsVectorLayer,QgsExpressionContextUtils, QgsProject,Qgis
 from qgis.PyQt.QtGui import QIcon  # pylint: disable=import-error
 from qgis.PyQt.QtWidgets import (QAction, QMessageBox)  # pylint: disable=import-error
 from qgis.PyQt.QtCore import (QObject, pyqtSignal)  # pylint: disable=import-error
+from PyQt5.QtWidgets import QInputDialog, QVBoxLayout, QWidget, QCheckBox, QDialog, QLabel, QDialogButtonBox
+from .install import install_cefpython3,check_DLLS,copy_missen_DLLS,return_Qgis_bin_path,check_Cefpython_installation
+from .copy_DLL import CheckboxDialog
 
 # pylint: disable=wildcard-import, unused-wildcard-import
 # Try-Except construct is needed because sphinx autodoc feature does not
@@ -226,6 +229,44 @@ class ButtonStateSubject(QObject):
         map_canvas.mapCanvasRefreshed.connect(self.on_map_canvas_refreshed)
         map_canvas.scaleChanged.connect(self.on_map_scale_changed)
         QgsProject.instance().layerWillBeRemoved.connect(self.on_layer_will_be_removed)
+
+
+        #TODO refactor checks if the required DLLS are available if not copies them from the Bin dir to the DLLS dir
+        if not check_DLLS()[0]:
+            files = ['libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll']
+            checkbox_dialog = CheckboxDialog(files)
+            result = checkbox_dialog.exec_()
+            # Get the selected files if the OK button is clicked
+            print("returned files",check_DLLS()[1])
+            
+            if result == QDialog.Accepted:
+                selected_files = checkbox_dialog.selected_files
+                print("Selected files:", selected_files)
+                for files in selected_files:
+                    print(files)
+                    copy_missen_DLLS(os.path.join(return_Qgis_bin_path(check_DLLS()[1]),files),os.path.join(check_DLLS()[1],files))
+            else:
+                print("Dialog canceled")
+
+
+        #TODO check if Cefpython3 is not installed and install it
+        if not check_Cefpython_installation():
+            install_cefpython3()
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
 
     @property
     def panorama_viewer_server_port(self):
