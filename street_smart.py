@@ -49,7 +49,7 @@ from qgis.PyQt.QtWidgets import (QAction, QMessageBox)  # pylint: disable=import
 from qgis.PyQt.QtCore import (QObject, pyqtSignal)  # pylint: disable=import-error
 from PyQt5.QtWidgets import QInputDialog, QVBoxLayout, QWidget, QCheckBox, QDialog, QLabel, QDialogButtonBox
 from .install import install_cefpython3,check_DLLS,copy_missen_DLLS,return_Qgis_bin_path,check_Cefpython_installation
-from .copy_DLL import CheckboxDialog
+from .checkboxDLLs import CheckboxDialog
 
 # pylint: disable=wildcard-import, unused-wildcard-import
 # Try-Except construct is needed because sphinx autodoc feature does not
