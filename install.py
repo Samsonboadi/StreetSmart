@@ -3,6 +3,7 @@ import sys
 import os
 import pkg_resources
 from qgis.core import (QgsVectorLayer,QgsExpressionContextUtils, QgsProject,Qgis)  # pylint: disable=import-error
+import re
 
 def install_cefpython3():
     qgis_python_path = sys.executable  # Get the path to the QGIS Python interpreter
