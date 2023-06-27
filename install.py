@@ -70,12 +70,31 @@ def get_Qgis_Version():
 
 
 
+def extract_python_Version():
+
+    python_version = sys.version
+
+    # Extract the Python version using regular expressions
+    match = re.search(r'(\d+\.\d+\.\d+)', python_version)
+
+    python_version = match.group(1)
+    # Split the version string
+    major, minor, _ = python_version.split(".")
+
+    # Concatenate the major and minor version numbers
+    converted_version = f"Python{major}{minor}"
+    
+    return converted_version
+
+
+
+
 def check_DLLS():
 
     qgis_versions = get_Qgis_Version()
 
-    destination_path_major_minor = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[1], "apps", "Python37", "DLLs")
-    destination_path_major = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[0], "apps", "Python37", "DLLs")
+    destination_path_major_minor = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[1], "apps", extract_python_Version(), "DLLs")
+    destination_path_major = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[0], "apps", extract_python_Version(), "DLLs")
 
     files = ['libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll']
     #destination_path_major_minor = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[1], "apps", "Python37", "DLLs")
