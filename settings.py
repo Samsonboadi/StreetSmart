@@ -143,7 +143,7 @@ class Settings:
         STREETSMART_LOCATION: ["streetmart_location", "login", "https://streetsmart.cyclomedia.com/api/v22.14/StreetSmartApi.js"], #v22.12  v23.2.0  v22.14 #v22.14 #22.20.2 https://streetsmart.cyclomedia.com/api/v22.20/api.html
         STREETSMART_SRS: ["streetmart_srs", "login", 'EPSG:28992'], # https://streetsmart.cyclomedia.com/api/v23.3/StreetSmartApi.js
         USE_DEFAULT_RECORDING_WFS_LOCATION: ["use_default_recording_wfs_location", "login", True],
-        RECORDING_WFS_LOCATION: ["recording_wfs_location", "login", "https://atlas.cyclomedia.com/recordings/wfs"], #https://atlasapi.cyclomedia.com/staging/recording/wfs?SERVICE=WFS&request=GetCapabilities  https://atlas.cyclomedia.com/recordings/wfs
+        RECORDING_WFS_LOCATION: ["recording_wfs_location", "login", "https://atlasapi.cyclomedia.com/api/recording/wfs"], #https://atlasapi.cyclomedia.com/staging/recording/wfs?SERVICE=WFS&request=GetCapabilities  https://atlas.cyclomedia.com/recordings/wfs
         USE_PROXY_SERVER: ["use_proxy_server", "login", False],
         PROXY_SERVER_TYPE: ["proxy_server_type", "login", None],
         PROXY_EXCLUDED_URLS: ["proxy_excluded_urls", "login", None],
