@@ -79,6 +79,8 @@ except ImportError:
     get_Qgis_version = get_Qgis_version.split('-')[0]
     sources_path=os.path.join(r"C:\Program Files\QGIS " +get_Qgis_version + "/bin")
     os.environ['PATH'] += sources_path
+    import sys
+    sys.path.append(sources_path)
 
 # Module constants
 HOST = "localhost"
@@ -240,9 +242,9 @@ class ButtonStateSubject(QObject):
             print("returned files",check_DLLS()[1])
             
             if result == QDialog.Accepted:
-                selected_files = checkbox_dialog.selected_files
-                print("Selected files:", selected_files)
-                for files in selected_files:
+                #selected_files = checkbox_dialog.selected_files
+                print("Selected files:", files)
+                for files in files:
                     print(files)
                     copy_missen_DLLS(os.path.join(return_Qgis_bin_path(check_DLLS()[1]),files),os.path.join(check_DLLS()[1],files))
             else:
@@ -252,6 +254,7 @@ class ButtonStateSubject(QObject):
         #TODO check if Cefpython3 is not installed and install it
         if not check_Cefpython_installation():
             install_cefpython3()
+
 
 
 
