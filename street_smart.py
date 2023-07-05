@@ -234,26 +234,27 @@ class ButtonStateSubject(QObject):
 
 
         #TODO refactor checks if the required DLLS are available if not copies them from the Bin dir to the DLLS dir
-        if not check_DLLS()[0]:
-            files = ['libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll']
-            checkbox_dialog = CheckboxDialog(files)
-            result = checkbox_dialog.exec_()
-            # Get the selected files if the OK button is clicked
-            print("returned files",check_DLLS()[1])
-            
-            if result == QDialog.Accepted:
-                #selected_files = checkbox_dialog.selected_files
-                print("Selected files:", files)
-                for files in files:
-                    print(files)
-                    copy_missen_DLLS(os.path.join(return_Qgis_bin_path(check_DLLS()[1]),files),os.path.join(check_DLLS()[1],files))
-            else:
-                print("Dialog canceled")
-
-
-        #TODO check if Cefpython3 is not installed and install it
         if not check_Cefpython_installation():
-            install_cefpython3()
+            if not check_DLLS()[0]:
+                files = ['libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll']
+                checkbox_dialog = CheckboxDialog(files)
+                result = checkbox_dialog.exec_()
+                # Get the selected files if the OK button is clicked
+                print("returned files",check_DLLS()[1])
+                
+                if result == QDialog.Accepted:
+                    #selected_files = checkbox_dialog.selected_files
+                    print("Selected files:", files)
+                    for files in files:
+                        print(files)
+                        copy_missen_DLLS(os.path.join(return_Qgis_bin_path(check_DLLS()[1]),files),os.path.join(check_DLLS()[1],files))
+                else:
+                    print("Dialog canceled")
+
+
+            #TODO check if Cefpython3 is not installed and install it
+            if not check_Cefpython_installation():
+                install_cefpython3()
 
 
 
