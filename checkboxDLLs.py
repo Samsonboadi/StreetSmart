@@ -15,19 +15,20 @@ class CheckboxDialog(QDialog):
         self.setLayout(layout)
         self.setWindowTitle("Required DLLs")
         
-        label_info = QLabel("Run Qgis as an Administrator and select files:")
-        label = QLabel("Select files:")
+        label_info = QLabel("Run Qgis as an Administrator and Click OK:")
+        label = QLabel("To copy these files:")
         layout.addWidget(label_info)
         layout.addWidget(label)
         
         for file in self.options:
             checkbox = QCheckBox(file)
-            checkbox.setChecked(False)  # Set the checkbox as checked by default
+            checkbox.setChecked(True)  # Set the checkbox as checked by default
             checkbox.stateChanged.connect(self.handleCheckboxChange)
+            checkbox.setEnabled(False)  # Disable the checkbox
             layout.addWidget(checkbox)
 
         # Add OK and Cancel buttons
-        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok) # | QDialogButtonBox.Cancel
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
