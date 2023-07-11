@@ -2,22 +2,14 @@ import subprocess
 import sys
 import os
 import pkg_resources
-from qgis.core import (QgsVectorLayer,QgsExpressionContextUtils, QgsProject,Qgis,QgsApplication)  # pylint: disable=import-error
+from qgis.core import (QgsVectorLayer,QgsExpressionContextUtils, QgsProject,Qgis)  # pylint: disable=import-error
 import re
-from platform import python_version
 
 def install_cefpython3():
-    python_version = python_version().split('.')
-    python_version = 'Python'+str(python_version[0])+str(python_version[1])
-    Qgispython_path =os.path.join(QgsApplication.prefixPath()[0],python_version) 
-    qgis_python_path = os.path.join(os.path.split(Qgispython_path,'python')) # Get the path to the QGIS Python interpreter
-    site_packages = os.path.join(Qgispython_path,'Lib','site-packages')
-
-
+    qgis_python_path = sys.executable  # Get the path to the QGIS Python interpreter
     cefpython_install_command = [
-        qgis_python_path, "-m", "pip", "install", "Cefpython3", "--target", site_packages
+        sys.executable, "-m", "pip", "install", "Cefpython3", "--target", qgis_python_path
     ]
-
   
 
     subprocess.check_call(cefpython_install_command)
