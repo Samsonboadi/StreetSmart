@@ -255,6 +255,8 @@ class ButtonStateSubject(QObject):
             #TODO check if Cefpython3 is not installed and install it
             if not check_Cefpython_installation():
                 install_cefpython3()
+        program_files_path = os.environ.get('ProgramFiles')
+        print("program_files_path",program_files_path)
 
 
 
