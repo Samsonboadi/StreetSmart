@@ -6,7 +6,7 @@
 name=StreetSmart
 qgisMinimumVersion=3.4
 description=This plugin manages the Street Smart imagery
-version=v3.0.2
+version=v3.0.3
 author=Merkator B.V.
 email=info@merkator.com
 
