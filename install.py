@@ -7,20 +7,25 @@ import re
 from platform import python_version
 
 def install_cefpython3():
-    python_version = python_version().split('.')
-    python_version = 'Python'+str(python_version[0])+str(python_version[1])
-    Qgispython_path =os.path.join(QgsApplication.prefixPath()[0],python_version) 
-    qgis_python_path = os.path.join(os.path.split(Qgispython_path,'python')) # Get the path to the QGIS Python interpreter
+    python_V = python_version().split('.')
+    python_V = 'Python'+str(python_V[0])+str(python_V[1])
+    Qgispython_path =os.path.join(os.path.split(QgsApplication.prefixPath())[0],python_V) 
+
+    qgis_python_path = os.path.join(Qgispython_path,'python') # Get the path to the QGIS Python interpreter
     site_packages = os.path.join(Qgispython_path,'Lib','site-packages')
 
 
     cefpython_install_command = [
-        qgis_python_path, "-m", "pip", "install", "Cefpython3", "--target", site_packages
+        qgis_python_path, "-m", "pip", "install", "Cefpython3", "--target",site_packages 
     ]
 
   
+    try:
+        subprocess.check_call(cefpython_install_command)
+    #except subprocess Exception
+    except subprocess.CalledProcessError as e:
+        pass
 
-    subprocess.check_call(cefpython_install_command)
 
 
 def check_Cefpython_installation():
@@ -102,11 +107,9 @@ def extract_python_Version():
 def check_DLLS():
 
     qgis_versions = get_Qgis_Version()
-    program_files_path = os.environ.get('ProgramFiles')
-    print("program_files_path",program_files_path)
 
-    destination_path_major_minor = os.path.join(program_files_path,"QGIS " + qgis_versions[1], "apps", extract_python_Version(), "DLLs")
-    destination_path_major = os.path.join(program_files_path,"QGIS " + qgis_versions[0], "apps", extract_python_Version(), "DLLs")
+    destination_path_major_minor = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[1], "apps", extract_python_Version(), "DLLs")
+    destination_path_major = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[0], "apps", extract_python_Version(), "DLLs")
 
     files = ['libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll']
     #destination_path_major_minor = os.path.join("C:\\Program Files\\QGIS " + qgis_versions[1], "apps", "Python37", "DLLs")
