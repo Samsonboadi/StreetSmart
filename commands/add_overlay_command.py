@@ -15,6 +15,7 @@ from qgis.core import (QgsFeatureRequest,  # noqa pylint: disable=import-error
                        QgsRectangle,
                        QgsVectorLayer,
                        QgsCircle,
+                       QgsGeometry,
                        )
 
 from ..logger import Logger  # noqa
@@ -93,16 +94,31 @@ class ExplodeGeometryCollection:
         feature = json.loads(feature_as_json)
         geometry = self._create_shapely_geometry(feature["geometry"])
         exploded_features = []
-        if hasattr(geometry, "geoms"):
+        if hasattr(geometry, "geoms") and geometry.geom_type != "MultiPolygon":
             for simple_geometry in geometry:
                 new_feature = json.loads(feature_as_json)
-                new_feature["geometry"] = self._geometry_as_json(
-                    simple_geometry)
+                new_feature["geometry"] = self._geometry_as_json(simple_geometry)
                 exploded_features.append(new_feature)
+
+        if geometry.geom_type == "MultiPolygon":
+            for polygon in geometry.geoms:  # Use .geoms to explicitly iterate over polygons
+                new_feature = json.loads(feature_as_json)
+                new_feature["geometry"] = self._geometry_as_json(polygon)
+                exploded_features.append(new_feature)
+
+
+
         else:
             exploded_features.append(json.loads(feature_as_json))
 
+        
         return exploded_features
+
+
+ 
+
+
+
 
     def explode_feature_collection(self,
                                    featurecollection_as_json: str) -> str:
@@ -261,58 +277,59 @@ class AddOverlayCommand(AbstractCommand):
     @log(logging.DEBUG)
     def __send_overlay(self):
         """ Creates json for the features on all visible layers"""
-        try:
+        #try:
 
-            if not self.is_checked:
-                self.sendMessageToRemoveOverlay()
-                return
+        if not self.is_checked:
+            self.sendMessageToRemoveOverlay()
+            return
 
-            search_radius = Settings.getInstance().get_overlay_search_radius()
-            cone = self.streetsmart.buttonstate.previous_cone
+        search_radius = Settings.getInstance().get_overlay_search_radius()
+        cone = self.streetsmart.buttonstate.previous_cone
 
-            # Cone can be None if panorama view has no valid recordings
-            if not cone or not cone.cone:
-                return
+        # Cone can be None if panorama view has no valid recordings
+        if not cone or not cone.cone:
+            return
 
-            cone_point = cone.cone.getPoint(0)
-            cone_srs = cone.srs
-            for visible_layer in _loop_toc(self.iface.mapCanvas().scale()):
-                layer_srs = visible_layer.sourceCrs()
-                layer_srs_id = layer_srs.authid()
-                layer_map_units = layer_srs.mapUnits()
-                transformed_cone_point = transform_point(cone_point, cone_srs,
-                                                        layer_srs_id)
-                transformed_search_radius = convert_distance(search_radius, 0,
-                                                            layer_map_units)
-                json_features = _get_features_as_json(visible_layer,
-                                                    transformed_cone_point,
-                                                    transformed_search_radius)
-                #QgsMessageLog.logMessage(str(transformed_cone_point), "transformed_cone_point")
-                #QgsMessageLog.logMessage(str(transformed_search_radius), "transformed_search_radius")
-                if json_features:
-                    json_features = _transform_coordinates(json_features,
-                                                        layer_srs_id,
-                                                        cone_srs.authid())
-                    # 0.01 seems a good value.
-                    # Shapely is a 2D library, simplify does not work on a 3D object.
-                    # Remove simplify entirely
-                    # tolerance = convert_distance(0.01, 0, layer_map_units)
-                    # json_features = _simplify_featuregeometry(json_features,
-                    #                                           tolerance)
+        cone_point = cone.cone.getPoint(0)
+        cone_srs = cone.srs
+        for visible_layer in _loop_toc(self.iface.mapCanvas().scale()):
+            layer_srs = visible_layer.sourceCrs()
+            layer_srs_id = layer_srs.authid()
+            layer_map_units = layer_srs.mapUnits()
+            transformed_cone_point = transform_point(cone_point, cone_srs,
+                                                    layer_srs_id)
+            transformed_search_radius = convert_distance(search_radius, 0,
+                                                        layer_map_units)
+            json_features = _get_features_as_json(visible_layer,
+                                                transformed_cone_point,
+                                                transformed_search_radius)
+            #QgsMessageLog.logMessage(str(transformed_cone_point), "transformed_cone_point")
+            #QgsMessageLog.logMessage(str(transformed_search_radius), "transformed_search_radius")
+            if json_features:
+                json_features = _transform_coordinates(json_features,
+                                                    layer_srs_id,
+                                                    cone_srs.authid())
+                # 0.01 seems a good value.
+                # Shapely is a 2D library, simplify does not work on a 3D object.
+                # Remove simplify entirely
+                # tolerance = convert_distance(0.01, 0, layer_map_units)
+                # json_features = _simplify_featuregeometry(json_features,
+                #                                           tolerance)
 
-                    sld_text = _get_sld_for_layer(visible_layer)
-                    if sld_text is None:
-                        sld_text = ''
+                sld_text = _get_sld_for_layer(visible_layer)
+                if sld_text is None:
+                    sld_text = ''
 
-                    # Escape the slash character
-                    json_features = json_features.replace(r"/", "__")
-                    sld_text = sld_text.replace(r"/", "__")
-                    self.sendMessageToAddOverlay(json_features,
-                                                visible_layer.name(),
-                                                cone_srs.authid(), sld_text,
-                                                'FF0000')
-        except Exception:
-            QMessageBox.information(None, "Information", "Something happenend") 
+                # Escape the slash character
+                json_features = json_features.replace(r"/", "__")
+                sld_text = sld_text.replace(r"/", "__")
+                self.sendMessageToAddOverlay(json_features,
+                                            visible_layer.name(),
+                                            cone_srs.authid(), sld_text,
+                                            'FF0000')
+        #except Exception as e:
+            #QMessageBox.information(None, "Information", e) 
+            #QMessageBox.information(None, "Information", "Something happenend {e}") 
 
     def __set_action_state(self):
         """ Toggles the state of the action """

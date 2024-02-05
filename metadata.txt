@@ -4,11 +4,13 @@
 
 [general]
 name=StreetSmart
-qgisMinimumVersion=3.4
+qgisMinimumVersion=3.6
+qgisMaximumVersion=3.28
 description=This plugin manages the Street Smart imagery
-version=v3.0.3
+version=v3.0.4
 author=Merkator B.V.
 email=info@merkator.com
+
 
 about=This plugin manages the Street Smart imagery. 
       The plugin can add the Atlas Recording WFS to the current project. 
@@ -27,7 +29,7 @@ about=This plugin manages the Street Smart imagery.
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-# changelog=
+changelog= support for Qgis 3.28. Able to Add Multipolygon vector layers to the Panorama viewer.
 
 # Tags are comma separated with spaces allowed
 tags=python, CycloMedia, Merkator, Cyclorama
