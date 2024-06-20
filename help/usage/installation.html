@@ -37,44 +37,47 @@
       <div class="content" role="main">
         
         
-  <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
-<p>The installation of the QGIS Street Smart plugin is done through the standard
-QGIS plugin installation mechanism. In the Plugins menu, go to the ‘Manage and
-Install plugins…’ option.</p>
-<figure class="align-default" id="id1">
-<img alt="Install Plugin from zip file." src="../_images/PluginInstallFromZip.PNG" />
-<figcaption>
-<p><span class="caption-text">Select the ‘Install from ZIP’ option and go to the folder where the zip file
-is located.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>Once the plugin is installed, check if the plugin is enabled. The plugin can be
-found in the installed plugins tab. The checkbox in front of the StreetSmart
-plugin must be checked.</p>
-<figure class="align-default" id="id2">
-<img alt="Enable the StreetSmart plugin." src="../_images/InstalledStreetSmartPlugin.PNG" />
-<figcaption>
-<p><span class="caption-text">Enable the plugin in the installed plugins tab.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>Finally, restart QGIS so that you have all the functionality of the plugin
-available.</p>
+        <section id="installation">
+          <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+          <p>To install the QGIS Street Smart plugin, you have two options: directly through the plugin window or using the ZIP file installation method.</p>
+          <p><strong>Option 1: Direct Installation through the Plugin Window</strong></p>
+          <p>In the Plugins menu, select the "Manage and Install Plugins..." option. Search for "StreetSmart" in the plugin window and click "Install" to directly install the plugin.</p>
+          <figure class="align-default" id="id1">
+            <img alt="Install Plugin from plugin window." src="../_images/PluginInstallDirect.PNG" />
+            <figcaption>
+              <p><span class="caption-text">Search for "StreetSmart" and install directly from the plugin window.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+            </figcaption>
+          </figure>
+          <p><strong>Option 2: Install from ZIP File</strong></p>
+          <p>In the Plugins menu, select the "Manage and Install Plugins..." option, then choose the "Install from ZIP" option and navigate to the folder where the ZIP file is located.</p>
+          <figure class="align-default" id="id2">
+            <img alt="Install Plugin from ZIP file." src="../_images/PluginInstallFromZip.PNG" />
+            <figcaption>
+              <p><span class="caption-text">Select the "Install from ZIP" option and navigate to the folder where the ZIP file is located.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+            </figcaption>
+          </figure>
+          <p>Once the plugin is installed, verify that it is enabled. The plugin can be found in the Installed Plugins tab. Ensure the checkbox next to the StreetSmart plugin is checked.</p>
+          <figure class="align-default" id="id3">
+            <img alt="Enable the StreetSmart plugin." src="../_images/InstalledStreetSmartPlugin.PNG" />
+            <figcaption>
+              <p><span class="caption-text">Enable the plugin in the Installed Plugins tab.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+            </figcaption>
+          </figure>
+          <p>Finally, restart QGIS to ensure all the functionality of the plugin is available.</p>
+        </section>
+        
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
-<p>For the moment, the plugin only works on Windows 10. The following verions of
-QGIS are supported: 3.10.14 LTS, 3.16.10 LTS, and 3.20.2.</p>
-<p>To use the Street Smart plugin, three Python modules must be available in the
-QGIS environment, namely: cefpython3, geojson and shapely. An administrator can
-install these modules. If these are not yet installed, the plugin will install
-the modules when it first runs. The user must have the necessary rights to
-install these modules.</p>
-<p>The module cefpython3 needs Python version 2.7 or a Python version between 3.4
-and 3.9 both included. On Windows, this is not an issue because a valid python
-version is installed together with QGIS.</p>
-<p>The plugin makes use of the StreetSmart API. Therefore, to view the CycloMedia
-Imagery, a license with CycloMedia is needed.</p>
+  <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h2>
+  <p>Currently, the plugin only works on Windows 10 and 11. There are two versions of the plugin:</p>
+  <ol>
+    <li><strong>StreetSmart Plugin Version 3.0.8.120:</strong> This version works with QGIS versions that support Python 3.9. The supported QGIS versions are 3.20.0 to 3.37.0.</li>
+    <li><strong>StreetSmart Plugin Version 3.0.6:</strong> This version works with QGIS versions that support Python versions up to 3.7. The supported QGIS versions are 3.6.0 to 3.19.0.</li>
+  </ol>
+  <p>To use the StreetSmart plugin, three Python modules must be available in the QGIS environment: <code>cefpython3</code>, <code>geojson</code>, and <code>shapely</code>. An administrator can install these modules. If they are not already installed, the plugin will install them upon its first run. The user must have the necessary permissions to install these modules.</p>
+  <p>The module <code>cefpython3</code> requires Python version 2.7 or any version between 3.4 and 3.9, inclusive. On Windows, this is not an issue because a valid Python version is installed with QGIS, and the plugin helps to manage these modules.</p>
+  <p>The plugin uses the StreetSmart API. Therefore, to view CycloMedia imagery, a license from CycloMedia is required.</p>
 </section>
+
 <section id="proxy-server">
 <h2>Proxy Server<a class="headerlink" href="#proxy-server" title="Permalink to this heading">¶</a></h2>
 <p>The plugin can be used behind a proxy server. Once installed, the plugin must

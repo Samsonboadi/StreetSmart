@@ -1,8 +1,8 @@
 """ Add Atlas WFS layer to QGIS Project """
 import logging
 from qgis.core import (QgsProject,  # pylint: disable=import-error
-                       QgsVectorLayer, QgsDataSourceUri)
-
+                       QgsVectorLayer, QgsDataSourceUri,QgsVectorFileWriter, QgsApplication,QgsMessageLog)
+import os
 from ..logger import Logger
 from ..logger import log
 from ..settings import Settings
@@ -75,12 +75,18 @@ class AddAtlasWFSLayerCommand(AbstractCommand):
         QgsProject.instance().addMapLayer(rec_layer, False)
         root.insertLayer(0, rec_layer)
 
+  
+
+
+
     @staticmethod
     @log(logging.DEBUG, print_return=True)
     def __get_settings():
         """Returns the plugin settings."""
         return_value = Settings.getInstance().settings
         return return_value
+
+
 
     @log(logging.DEBUG, print_return=True)
     def create_wfs_definition(self):
@@ -98,6 +104,7 @@ class AddAtlasWFSLayerCommand(AbstractCommand):
                         settings[Settings.USERNAME].value)
         ds_uri.setParam("password",
                         settings[Settings.PASSWORD].value)
+        print(Settings.getInstance().getAtlasSRSName())
         # ds_uri.setParam("authcfg", Settings.getInstance().getAuthcfg())
         ds_uri.setParam("filter", get_filter_parameters)
         ds_uri.setParam('restrictToRequestBBOX', '1')

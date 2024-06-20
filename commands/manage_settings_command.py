@@ -653,7 +653,7 @@ class SettingsDialog(QDialog):  # pylint: disable=too-few-public-methods
         ''' About '''
         about_html = "<p>Street Smart for QGIS</p>"
         about_html += "<p>Copyright &copy; Merkator 2023</p>"
-        about_html += "<p>version v3.0.0</p>"
+        about_html += "<p>version v3.0.9.120.2</p>"
         about_html += "<p>git sha 2624fa958dd3bd1c6729e36df552406ad92ad02b</p>"   
         about_html += "<p>http://www.merkator.com</p>"
         e = QTextEdit()

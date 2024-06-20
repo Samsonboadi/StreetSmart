@@ -48,7 +48,7 @@ from qgis.PyQt.QtGui import QIcon  # pylint: disable=import-error
 from qgis.PyQt.QtWidgets import (QAction, QMessageBox)  # pylint: disable=import-error
 from qgis.PyQt.QtCore import (QObject, pyqtSignal)  # pylint: disable=import-error
 from PyQt5.QtWidgets import QInputDialog, QVBoxLayout, QWidget, QCheckBox, QDialog, QLabel, QDialogButtonBox
-from .install import install_cefpython3,check_DLLS,copy_missen_DLLS,return_Qgis_bin_path,check_Cefpython_installation
+from .install import install_cefpython3,check_DLLs,copy_missen_DLLS,return_Qgis_bin_path,check_Cefpython_installation,configure_paths,check_qgis_version
 from .checkboxDLLs import CheckboxDialog
 
 # pylint: disable=wildcard-import, unused-wildcard-import
@@ -74,21 +74,21 @@ except ImportError:
     from controller import initialize_servers
     from utils import (start_python_script, convert_meters_to_mapunits)
 # pylint: enable=wildcard-import, unused-wildcard-import
-#Get Qgis version and append Ebinoath to system ENV
-    get_Qgis_version = QgsExpressionContextUtils.globalScope().variable('qgis_version')
-    get_Qgis_version = get_Qgis_version.split('-')[0]
-    sources_path=os.path.join(r"C:\Program Files\QGIS " +get_Qgis_version + "/bin")
-    os.environ['PATH'] += sources_path
-    import sys
-    sys.path.append(sources_path)
+    configure_paths()
+
+
+
+
+
 
 # Module constants
 HOST = "localhost"
 GEOJSON_PACKAGE_NAME = "geojson"
 SHAPELY_PACKAGE_NAME = "shapely"
 CEFPYTHON_PACKAGE_NAME = "cefpython3"
-CEFPYTHON_PACKAGE_VERSION = "66.1"
-CEFPYTHON_FULL_PACKAGE_NAME = CEFPYTHON_PACKAGE_NAME + "==" + CEFPYTHON_PACKAGE_VERSION  # pylint: disable=line-too-long
+CEFPYTHON_FULL_PACKAGE_NAME_FOR_PY39 = "https://github.com/Samsonboadi/cefpython/releases/download/cefpython120.2/cefpython3-120.2-py2.py3-none-win_amd64.whl"  # pylint: disable=line-too-long
+CEFPYTHON_FULL_PACKAGE_NAME_FOR_PY312 = "https://github.com/Samsonboadi/cefpython-merk-cef120/releases/download/cefpython3-124.3/cefpython3-124.3-py2.py3-none-win_amd64.whl"  # pylint: disable=line-too-long
+PYTHON_EXECUTABLE = "python.exe"
 PYTHON_EXECUTABLE = "python.exe"
 COMMANDSDIRECTORY = "commands"
 
@@ -232,29 +232,39 @@ class ButtonStateSubject(QObject):
         map_canvas.scaleChanged.connect(self.on_map_scale_changed)
         QgsProject.instance().layerWillBeRemoved.connect(self.on_layer_will_be_removed)
 
-
+        if not check_qgis_version():
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("This version of the StreetSmart plugin is not compatible with your QGIS version.")
+            msg.setWindowTitle("Compatibility Warning")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+            
+            
         #TODO refactor checks if the required DLLS are available if not copies them from the Bin dir to the DLLS dir
-        if not check_Cefpython_installation():
-            if not check_DLLS()[0]:
-                files = ['libssl-1_1-x64.dll', 'libcrypto-1_1-x64.dll']
-                checkbox_dialog = CheckboxDialog(files)
-                result = checkbox_dialog.exec_()
-                # Get the selected files if the OK button is clicked
-                print("returned files",check_DLLS()[1])
+    if not check_Cefpython_installation():
+        dlls_missing, path_checked, missing_files = check_DLLs()
+        
+        if dlls_missing:
+            files = missing_files
+            checkbox_dialog = CheckboxDialog(files)
+            result = checkbox_dialog.exec_()
+            
+            # Proceed if the user accepts the dialog
+            if result == QDialog.Accepted:
+                for file in files:
+                    # Copy each missing DLL to the specified directory
+                    print(return_Qgis_bin_path(path_checked), file)
+                    copy_missen_DLLS(os.path.join(return_Qgis_bin_path(path_checked), file), os.path.join(path_checked, file))
                 
-                if result == QDialog.Accepted:
-                    #selected_files = checkbox_dialog.selected_files
-                    print("Selected files:", files)
-                    for files in files:
-                        print(files)
-                        copy_missen_DLLS(os.path.join(return_Qgis_bin_path(check_DLLS()[1]),files),os.path.join(check_DLLS()[1],files))
-                else:
-                    print("Dialog canceled")
+                # After copying missing DLLs, install Cefpython
+            else:
+                # Handle case when dialog is canceled
+                print("Dialog canceled")
+        #else:
+            # If DLLs are not missing, proceed to install Cefpython
+            #install_cefpython3()
 
-
-            #TODO check if Cefpython3 is not installed and install it
-            if not check_Cefpython_installation():
-                install_cefpython3()
 
 
 
@@ -918,6 +928,62 @@ def _import_commands(directory: str) -> typing.List:
     return result
 
 
+def _install_cefpython_package_with_pip(package_name: str) -> bool:
+    """Installs cefpython3 package.
+
+    :returns: True if package is installed successfully, False otherwise.
+    """
+    print("package_name",package_name)
+    return_value = False
+    python_exe = os.path.join(sys.base_exec_prefix, PYTHON_EXECUTABLE)
+    try:
+        returncode = subprocess.run([python_exe,
+                                     "-m", "pip", "install",
+                                     "--user",
+                                     package_name],
+                                    check=False,
+                                    stderr=subprocess.PIPE,
+                                    stdout=subprocess.PIPE)
+
+        if returncode.returncode != 0:
+            logger.error("Installation failed! Exit!")
+            return_value = False
+
+        if logger:
+            logger.info("%s installation succeeded!", package_name)
+        return_value = True
+    except subprocess.CalledProcessError:
+        if logger:
+            logger.exception("Error occurred at installing %s", package_name)
+        return_value = False
+
+    return return_value
+
+
+
+
+def _install_cefpython_package(package_name, full_package_name=None):
+    """Checks for a Python package and installs package if it is not
+    available.
+
+    :returns:  0 if package was not found but is installed successfully
+              -1 if package was not found and could not be installed
+               1 if package was already installed
+    """
+    full_package_name = full_package_name
+    if importlib.util.find_spec(package_name) is None:
+        if logger:
+            logger.info("%s not installed. Try to install %s...", package_name,
+                        full_package_name)
+
+        return _install_cefpython_package_with_pip(full_package_name)
+
+    if logger:
+        logger.info("%s already installed", package_name)
+    return 1
+
+
+
 def _install_package_with_pip(package_name: str) -> bool:
     """Installs cefpython3 package.
 
@@ -958,14 +1024,13 @@ def _install_package_with_pip(package_name: str) -> bool:
 
     return return_value
 
-
 def _install_package(package_name, full_package_name=None):
     """Checks for a Python package and installs package if it is not
     available.
 
     :returns:  0 if package was not found but is installed successfully
-              -1 if package was not found and could not be installed
-               1 if package was already installed
+            -1 if package was not found and could not be installed
+            1 if package was already installed
     """
     full_package_name = full_package_name or package_name
     if importlib.util.find_spec(package_name) is None:
@@ -981,14 +1046,28 @@ def _install_package(package_name, full_package_name=None):
 
 
 def _install_cefpython_when_not_available():
-    """Checks for CEF Python package and installs package if it is not
+    """Checks for CEF Python package and installs the appropriate version based on Python version.
+
+
+    Checks for CEF Python package and installs package if it is not
     available.
 
     :returns:  0 if cefpython3 was not found but is installed successfully
               -1 if cefpython3 was not found and could not be installed
                1 if cefpython3 was already installed
+    
     """
-    return _install_package(CEFPYTHON_PACKAGE_NAME, CEFPYTHON_FULL_PACKAGE_NAME)
+
+    python_version = sys.version_info
+    if python_version < (3, 9):
+        cefpython_version = "cefpython3==66.0"
+    elif (3, 9) <= python_version < (3, 12):
+        cefpython_version = CEFPYTHON_FULL_PACKAGE_NAME_FOR_PY39
+    else:
+        cefpython_version = CEFPYTHON_FULL_PACKAGE_NAME_FOR_PY312
+    
+    return _install_cefpython_package(CEFPYTHON_PACKAGE_NAME, cefpython_version)
+
 
 
 

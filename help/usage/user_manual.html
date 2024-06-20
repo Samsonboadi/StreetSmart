@@ -1,206 +1,176 @@
 
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <title>User Guide — Street Smart QGIS Plugin $TAG$ Documentation</title>
+  <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
+  <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+  <script src="../_static/jquery.js"></script>
+  <script src="../_static/underscore.js"></script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+  <script src="../_static/doctools.js"></script>
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" />
+  <link rel="next" title="Known Issues" href="known_issues.html" />
+  <link rel="prev" title="Installation" href="installation.html" />
+</head>
+<body>
+  <div class="header" role="banner">
+    <img class="rightlogo" src="../_static/Merkator_Simple_Transparent_No_Gradient_Web.png" alt="Logo" />
+    <h1 class="heading"><a href="../index.html"><span>Street Smart Plugin</span></a></h1>
+    <h2 class="heading"><span>User Guide</span></h2>
+  </div>
+  <div class="topnav" role="navigation" aria-label="top navigation">
+    <p>
+      « <a href="installation.html">Installation</a> :: 
+      <a class="uplink" href="../index.html">Contents</a> :: 
+      <a href="known_issues.html">Known Issues</a> »
+    </p>
+  </div>
+  <div class="content" role="main">
+    <section id="user-guide">
+      <h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading">¶</a></h1>
+      <p>The Street Smart plugin enables the integration of CycloMedia's Cyclorama images into QGIS. An additional window displays these images and synchronizes with the QGIS canvas.</p>
+      <p>With the Street Smart plugin for QGIS, users can:
+        <ul>
+          <li>Add the recording locations of Cycloramas as a WFS layer in QGIS.</li>
+          <li>Create QGIS features based on measurements taken in Cycloramas.</li>
+          <li>Show QGIS vector layers as overlays in the Cycloramas.</li>
+        </ul>
+      </p>
+      <p>To utilize all the plugin's features, users must have the necessary credentials for accessing, CycloMedia images. These credentials should be entered in the login tab of the settings window.</p>
+    </section>
+    
+    <section id="toolbar">
+      <h2>Toolbar<a class="headerlink" href="#toolbar" title="Permalink to this heading">¶</a></h2>
+      <p>The plugin adds several commands to QGIS, accessible from the plugin menu. Many of these commands are also available in the plugin toolbar.</p>
+      <figure class="align-default" id="id1">
+        <img alt="Toolbar image" src="../_images/Toolbar.PNG" />
+        <figcaption>
+          <p><span class="caption-text">Buttons added to the toolbar by the plugin.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <figure class="align-default" id="id2">
+        <img alt="Menu image" src="../_images/Menu.PNG" />
+        <figcaption>
+          <p><span class="caption-text">Commands added by the Street Smart plugin.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+    </section>
+    
+    <section id="add-atlas-recording-wfs">
+      <h2>Add Atlas Recording WFS<a class="headerlink" href="#add-atlas-recording-wfs" title="Permalink to this heading">¶</a></h2>
+      <p>This button adds a WFS layer to the current project with the currently valid CycloMedia recordings. The valid recordings are filtered using the following criteria:</p>
+      <blockquote>
+        <div><div class="highlight-sql notranslate"><div class="highlight"><pre>expiredAt is null</pre></div></div></div>
+      </blockquote>
+      <p>The layer is placed at the top of the legend and is named ‘CycloMedia Recordings’. Note that no account is taken for any layers with the same name. This button is always enabled.</p>
+    </section>
+    
+    <section id="select-cyclorama-point">
+      <h2>Select Cyclorama Point<a class="headerlink" href="#select-cyclorama-point" title="Permalink to this heading">¶</a></h2>
+      <p>This button allows you to select a recording on the canvas. The cyclorama of the selected recording is displayed in the viewer. If the viewer is not open, it will be opened; if it is already open, the plugin shows the cyclorama in the same window. A cone on the canvas map indicates the viewing direction in the cyclorama. This button is enabled if a recording layer is added to the project.</p>
+      <p>The panorama viewer uses the coordinate system of the map canvas. If the QGIS coordinate system changes, the viewer's CRS remains in the previous CRS until a new panorama is selected in QGIS. Walking through different cycloramas in the viewer keeps the CRS in its previous state.</p>
+    </section>
+    
+    <section id="add-an-overlay-to-the-cyclorama-window">
+      <h2>Add an Overlay to the Cyclorama Window<a class="headerlink" href="#add-an-overlay-to-the-cyclorama-window" title="Permalink to this heading">¶</a></h2>
+      <p>This button transfers data from the visible layers around the cone to the viewer. This button is only enabled when a viewer window is open.</p>
+      <figure class="align-default" id="id3" style="width: 50%">
+        <img alt="Viewer with overlays" src="../_images/WithOverlay.PNG" />
+        <figcaption>
+          <p><span class="caption-text">Viewer with vector layers as overlays.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <p>The features displayed are within 30 meters of the current Cyclorama. As long as the overlay button is checked, QGIS will send features within the query distance around the cone to the viewer. Users can control the visibility of layers in the viewer.</p>
+      <p>If a layer that was not visible in QGIS should be sent to the viewer, the user must first make it visible. By toggling the overlay button, the additional layer is sent to the viewer.</p>
+    </section>
+    
+    <section id="create-a-measurement">
+      <h2>Create a Measurement<a class="headerlink" href="#create-a-measurement" title="Permalink to this heading">¶</a></h2>
+      <p>This button is a toggle. When checked, and if an editable layer is selected, measurements made in the viewer are transferred to QGIS and added as features in the selected layer.</p>
+      <p>The measurement functionality allows users to copy objects from the images into a QGIS layer, regardless of whether the layer refers to a database or is a scratch layer.</p>
+      <p>When the measurement toggle is on, the appropriate measurement type is displayed in the cyclorama window depending on the layer type: for a point layer, it shows the location type; for a polyline layer, the distance type; and for a polygon layer, the surface type.</p>
+      <figure class="align-default" id="id4" style="width: 50%">
+        <img alt="Start a point measurement" src="../_images/StartMeasurementLocation.PNG" />
+        <figcaption>
+          <p><span class="caption-text">View when a point layer is selected in measurement mode.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <figure class="align-default" id="id5" style="width: 50%">
+        <img alt="Start a polyline measurement" src="../_images/StartMeasurementDistance.PNG" />
+        <figcaption>
+          <p><span class="caption-text">View when a polyline layer is selected in measurement mode.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <figure class="align-default" id="id6" style="width: 50%">
+        <img alt
 
-    <title>User Guide &#8212; Street Smart QGIS plugin $TAG$ documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Known Issues" href="known_issues.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
-  </head><body>
-      <div class="header" role="banner"><img class="rightlogo" src="../_static/Merkator_Simple_Transparent_No_Gradient_Web.png" alt="Logo"/><h1 class="heading"><a href="../index.html">
-          <span>Street Smart plugin</span></a></h1>
-        <h2 class="heading"><span>User Guide</span></h2>
-      </div>
-      <div class="topnav" role="navigation" aria-label="top navigation">
+="Start a surface measurement" src="../_images/StartMeasurementSurface.PNG" />
+        <figcaption>
+          <p><span class="caption-text">View when a polygon layer is selected in measurement mode.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <p>Users can draw in the cyclorama, and the points are transferred to the QGIS layer. For a point layer, this happens after the first point; for line and area layers, 2 or 3 points must be indicated, respectively.</p>
+      <figure class="align-default" id="id7">
+        <img alt="Added a point feature" src="../_images/FirstPoint.PNG" />
+        <figcaption>
+          <p><span class="caption-text">A point selected in the Cyclorama viewer is added to the QGIS layer.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <p>As long as new points are entered in the cyclorama window, the drawn object is updated. A new object is started by clicking on the measurement type in the cyclorama window. The objects are stored in the QGIS layer in the standard QGIS way.</p>
+      <figure class="align-default" id="id8">
+        <img alt="Prepare for a second point feature" src="../_images/BeforeSecondPointWithPointer.png" />
+        <figcaption>
+          <p><span class="caption-text">Clicking on the measurement type confirms the first point and prepares QGIS for another point feature.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+    </section>
+    
+    <section id="settings">
+      <h2>Settings<a class="headerlink" href="#settings" title="Permalink to this heading">¶</a></h2>
+      <p>This button displays a dialog window where data such as username, password, and URLs can be set.</p>
+      <figure class="align-default" id="id9" style="width: 50%">
+        <img alt="Login Settings Tab" src="../_images/LoginSettings.PNG" />
+        <figcaption>
+          <p><span class="caption-text">Window for setting username and password.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <figure class="align-default" id="id10" style="width: 50%">
+        <img alt="Configuration Settings Tab" src="../_images/ConfigurationSettings.PNG" />
+        <figcaption>
+          <p><span class="caption-text">Window for setting URLs for the StreetSmart API and proxy.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
+      <figure class="align-default" id="id10" style="width: 50%">
+        <img alt="Configuration Settings Tab" src="../_images/Advanced_Configuration.PNG" />
+        <figcaption>
+          <p><span class="caption-text">Window settings for filtering the Cyclorama points. The default setting is no filter. 
+          Enable this option and use the slider to adjust the filter distance in meters for:
+            <ul>
+              <li>Latitude (X)</li>
+              <li>Longitude (Y)</li>
+              <li>Height (Z)</li>
+            </ul>
+          </span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+        </figcaption>
+      </figure>
       
-        <p>
-        «&#160;&#160;<a href="installation.html">Installation</a>
-        &#160;&#160;::&#160;&#160;
-        <a class="uplink" href="../index.html">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="known_issues.html">Known Issues</a>&#160;&#160;»
-        </p>
-
-      </div>
-      <div class="content" role="main">
-        
-        
-  <section id="user-guide">
-<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading">¶</a></h1>
-<p>The Street Smart plugin makes it possible to integrate the Cyclorama images
-from CycloMedia into QGIS. To this end, an additional window is shown with
-the images. This window is synchronized with what is shown in the canvas
-folder of QGIS.</p>
-<p>The Street Smart plugin for QGIS allows the user to:
-* add the recording locations of the Cycloramas as a WFS layer in QGIS,
-* create features QGIS for the measurements taken in Cycloramas;
-* show vector layers from QGIS as an overlay in the Cycloramas.</p>
-<p>In order to use all the features of the plugin, the user must have the
-necessary credentials to use the CycloMedia images. The user must enter these
-credentials in the login tab of the settings window.</p>
-<section id="toolbar">
-<h2>Toolbar<a class="headerlink" href="#toolbar" title="Permalink to this heading">¶</a></h2>
-<p>The plugin adds a number of commands to QGIS. These commands can all be found
-in the menu of the plugin. A number of these commands can also be seen in the
-plugin toolbar.</p>
-<figure class="align-default" id="id1">
-<img alt="toolbar image" src="../_images/Toolbar.PNG" />
-<figcaption>
-<p><span class="caption-text">The buttons the plugin adds to the toolbar</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id2">
-<img alt="menu image" src="../_images/Menu.PNG" />
-<figcaption>
-<p><span class="caption-text">The commands which are added by the Street Smart plugin</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="add-atlas-recording-wfs">
-<h2>Add Atlas Recording WFS<a class="headerlink" href="#add-atlas-recording-wfs" title="Permalink to this heading">¶</a></h2>
-<p>This button adds a WFS layer to the current project with the currently valid
-CycloMedia recordings. The selection of the valid recordings is done through
-the following filter:</p>
-<blockquote>
-<div><div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">expiredAt</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">null</span><span class="w"></span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>The layer is placed at the top of the legend. The name of this layer is
-always ‘CycloMedia Recordings’. No account is taken for any layers that have
-the same name. Furthermore, this button is always enabled.</p>
-</section>
-<section id="select-cyclorama-point">
-<h2>Select Cyclorama point<a class="headerlink" href="#select-cyclorama-point" title="Permalink to this heading">¶</a></h2>
-<p>This button allows you to select a recording on the canvas. The cyclorama of
-the selected recording is shown in the viewer. If the viewer is not yet open,
-it will be opened. If it was already open, the plugin shows the cyclorama in
-the same window. A cone is shown on the canvas map that indicates the viewing
-direction in the cyclorama. This button is enabled if an recording layer is
-added to the project.</p>
-<p>The panorama viewer is opened in the coordinate system of the mapCanvas. If the
-coordinate system of QGIS is changed, the crs of the viewer is held in the
-previous crs until a new panorama is selected in QGIS. Walking through
-different cycloramas thought the viewer keeps the crs in the previous state.</p>
-</section>
-<section id="add-an-overlay-to-the-cyclorama-window">
-<h2>Add an overlay to the cyclorama window<a class="headerlink" href="#add-an-overlay-to-the-cyclorama-window" title="Permalink to this heading">¶</a></h2>
-<p>This button transfers the data from the visible layers around the cone to the
-viewer. This button is not enabled unless a viewer window is open.</p>
-<figure class="align-default" id="id3" style="width: 50%">
-<img alt="Viewer with overlays" src="../_images/WithOverlay.PNG" />
-<figcaption>
-<p><span class="caption-text">The viewer with some vector layers as overlay.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>The features shown are with 30 meters of the current Cyclorama. As long as the
-overlay button is checked, QGIS will send the features within the query
-distance around the cone to the viewer. The user can set the visiblity of the
-layers in the viewer.</p>
-<p>If a layer that was not visible in QGIS should still be sent to the viewer, the
-user must first make it visible. By toggling the overlay button, the additional
-layer is sent to the viewer.</p>
-</section>
-<section id="create-a-measurement">
-<h2>Create a measurement<a class="headerlink" href="#create-a-measurement" title="Permalink to this heading">¶</a></h2>
-<p>This button is a toggle. If this button is checked and a layer that is
-editable is selected, measurements made in the viewer are transferred to
-QGIS and added as a feature in the selected layer.</p>
-<p>The ‘measurement’ functionality allows the user to copy objects contained in
-the images into a QGIS layer. It does not matter whether the layer refers to a
-database or whether it is a so-called scratch layer.</p>
-<p>When the user turns on the measurement toggle, the appropriate measurement type
-is displayed in the cyclorama window depending on the layer type: for a point
-layer this is the location type, for a polyline layer this is the distance type
-and for a polygon layer this is the surface type.</p>
-<figure class="align-default" id="id4" style="width: 50%">
-<img alt="Start a point measurement" src="../_images/StartMeasurementLocation.PNG" />
-<figcaption>
-<p><span class="caption-text">The view when a point layer is selected in measurement mode.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id5" style="width: 50%">
-<img alt="Start a polyline measurement" src="../_images/StartMeasurementDistance.PNG" />
-<figcaption>
-<p><span class="caption-text">The view when a polyline layer is selected in measurement mode.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id6" style="width: 50%">
-<img alt="Start a surface measurement" src="../_images/StartMeasurementSurface.PNG" />
-<figcaption>
-<p><span class="caption-text">The view when a polygon layer is selected in measurement mode.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>At this point, the user can draw in the cyclorama and the points are
-transferred to the QGIS layer. For a point layer this already happens after the
-first point, for a line and an area layer 2 or 3 points must be indicated
-respectively.</p>
-<figure class="align-default" id="id7">
-<img alt="Added a point feature" src="../_images/FirstPoint.PNG" />
-<figcaption>
-<p><span class="caption-text">A point, selected in the Cyclorama viewer, is added to the QGIS layer.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>As long as new points are entered in the cylcorama window, the drawn object is
-changed. A new object is started by clicking on the measurement type in the
-cyclorama window. The storage of the objects in the QGIS layer is done in the
-standard QGIS way.</p>
-<figure class="align-default" id="id8">
-<img alt="Prepare for a second point feature" src="../_images/BeforeSecondPointWithPointer.png" />
-<figcaption>
-<p><span class="caption-text">By clicking on the measurement type, the first point is confirmed and QGIS
-is ready for another point feature</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="settings">
-<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this heading">¶</a></h2>
-<p>This button displays a dialog window in which data such as user name,
-password and urls can be set.</p>
-<figure class="align-default" id="id9" style="width: 50%">
-<img alt="Login Settings Tab" src="../_images/LoginSettings.PNG" />
-<figcaption>
-<p><span class="caption-text">Window in which username and password must be set.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id10" style="width: 50%">
-<img alt="Configuration Settings Tab" src="../_images/ConfigurationSettings.PNG" />
-<figcaption>
-<p><span class="caption-text">Window in which urls for StreetSmart api and proxy can be set.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-
-
-      </div>
-      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
-      
-        <p>
-        «&#160;&#160;<a href="installation.html">Installation</a>
-        &#160;&#160;::&#160;&#160;
-        <a class="uplink" href="../index.html">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="known_issues.html">Known Issues</a>&#160;&#160;»
-        </p>
-
-      </div>
-
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Merkator B.V..
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
-    </div>
-  </body>
+    </section>
+  </div>
+  <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+    <p>
+      « <a href="installation.html">Installation</a> :: 
+      <a class="uplink" href="../index.html">Contents</a> :: 
+      <a href="known_issues.html">Known Issues</a> »
+    </p>
+  </div>
+  <div class="footer" role="contentinfo">
+    © Copyright 2020, Merkator B.V.. Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+  </div>
+</body>
 </html>

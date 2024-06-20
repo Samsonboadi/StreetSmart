@@ -6,12 +6,21 @@
 function apiInitialized() {
     js_initialized();
     console.log('Api: init: success!');
+    // Hide the loading screen and show the main content
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('streetsmartApi').style.display = 'block';
 }
 
-function loadError(oError) {
+/*function loadError(oError) {
     //throw new URIError(`The script ${oError.target.src} didn't load correctly.`);
     console.log('Api: init: success!',oError.oError.target.src);
-  }
+  }*/
+
+  function loadError(oError) {
+    console.log('Api: init: failed!', oError.target.src);
+    // Optionally, display a different message or UI element to the user indicating the load failure
+    document.getElementById('loadingScreen').innerHTML = "Failed to load resources. Please try again.";
+}
 /**
  * Initialize Street Smart API
  */

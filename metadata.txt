@@ -4,20 +4,20 @@
 
 [general]
 name=StreetSmart
-qgisMinimumVersion=3.6
-qgisMaximumVersion=3.28
+qgisMinimumVersion=3.20
+qgisMaximumVersion=3.36
 description=This plugin manages the Street Smart imagery
-version=v3.0.4
+version=v3.2.1.120.2
 author=Merkator B.V.
 email=info@merkator.com
-
 
 about=This plugin manages the Street Smart imagery. 
       The plugin can add the Atlas Recording WFS to the current project. 
       And shows the Street Smart Panorama viewer in an external view. 
-      The plugin requires Cefpython3, and this needs to be installed first before the plugin can be used.
-      You can follow the instructions here to install the package on your computer https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/
-      For further details please visit http://www.merkator.com/streetsmart-plugin
+      The plguin uses the latest streetsmart API version 24.1
+      The plugin requires Cefpython3 for python39/312, this will be installed  automatically if not found.
+      If this is the  first time running the plugin please restart Qgis after the plugin has installed
+      For further details please visit http://www.merkator.com/streetsmart/help
       
 
 
@@ -29,13 +29,13 @@ about=This plugin manages the Street Smart imagery.
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-changelog= support for Qgis 3.28. Able to Add Multipolygon vector layers to the Panorama viewer.
+# changelog=
 
 # Tags are comma separated with spaces allowed
 tags=python, CycloMedia, Merkator, Cyclorama
 
 
-homepage=https://www.cyclomedia.com/en/qgis
+homepage=https://github.com/Samsonboadi/StreetSmart
 tracker=https://github.com/Samsonboadi/StreetSmart/issues
 repository=https://github.com/Samsonboadi/StreetSmart
 

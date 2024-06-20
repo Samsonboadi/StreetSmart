@@ -140,7 +140,7 @@ class Settings:
         USE_DEFAULT_CONFIGURATION_URL: ["use_default_configuration_url", "login", True],  # noqa: E501
         CONFIGURATION_URL: ["configuration_url", "login", 'https://atlasapi.cyclomedia.com/api/configuration'],
         USE_DEFAULT_STREETSMART_LOCATION: ["use_default_streetmart_location", "login", True],  # noqa: E501
-        STREETSMART_LOCATION: ["streetmart_location", "login", "https://streetsmart.cyclomedia.com/api/v22.14/StreetSmartApi.js"], #v22.12  v23.2.0  v22.14 #v22.14 #22.20.2 https://streetsmart.cyclomedia.com/api/v22.20/api.html
+        STREETSMART_LOCATION: ["streetmart_location", "login", "https://streetsmart.cyclomedia.com/api/v24.1/StreetSmartApi.js"], #v22.12  v23.2.0  v22.14 #v22.14 #22.20.2 https://streetsmart.cyclomedia.com/api/v22.20/api.html
         STREETSMART_SRS: ["streetmart_srs", "login", 'EPSG:28992'], # https://streetsmart.cyclomedia.com/api/v23.3/StreetSmartApi.js
         USE_DEFAULT_RECORDING_WFS_LOCATION: ["use_default_recording_wfs_location", "login", True],
         RECORDING_WFS_LOCATION: ["recording_wfs_location", "login", "https://atlasapi.cyclomedia.com/api/recording/wfs"], #https://atlasapi.cyclomedia.com/staging/recording/wfs?SERVICE=WFS&request=GetCapabilities  https://atlas.cyclomedia.com/recordings/wfs

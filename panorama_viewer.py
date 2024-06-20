@@ -142,23 +142,23 @@ class PanoramaViewer():
         """Creates the url for the start page."""
         return "http://{}:{}/{}".format(_HOST, str(port), _INDEX_URI)
 
-    def start_cef_browser(self, port, lifespan_handler, commandline_switches):
+    '''def start_cef_browser(self, port, lifespan_handler, commandline_switches):
         """ Function starts the browser """
 
         _check_versions()
 
         # Set excepthook to shutdown all CEF processes on error
         sys.excepthook = cef.ExceptHook
-        if _DEBUG_CEF:
-            settings = {
-                "debug": True,
-                "log_severity": cef.LOGSEVERITY_VERBOSE,
-                "log_file": r"c:\temp\debug.log",
-                "uncaught_exception_stack_size": -1,
-                "ignore_certificate_errors": True,
-            }
-        else:
-            settings = {}
+        #if _DEBUG_CEF:
+        settings = {
+            "debug": True,
+            "log_severity": cef.LOGSEVERITY_VERBOSE,
+            "log_file": r"c:\temp\debug.log",
+            "uncaught_exception_stack_size": -1,
+            "ignore_certificate_errors": True,
+        }
+        #else:
+            #settings = {}
 
         cef.Initialize(settings=settings, switches=commandline_switches)
 
@@ -171,7 +171,34 @@ class PanoramaViewer():
 
         self.set_javascript_bindings(cef_browser)
 
-        return cef_browser
+        return cef_browser'''
+
+
+
+
+    def start_cef_browser(self, port, lifespan_handler, commandline_switches):
+            """ Function starts the browser """
+
+            #_check_versions()
+
+            settings = {}
+
+            cef.Initialize(settings=settings, switches=commandline_switches)
+
+            index_url = self.__create_html_url(port)
+            cef_browser = cef.CreateBrowserSync(
+                url=index_url,
+                window_title="Street Smart Panorama Viewer")
+            
+            self.set_javascript_bindings(cef_browser)
+
+            cef_browser.SetClientHandler(lifespan_handler)
+
+            
+
+            return cef_browser
+
+
 
     def _setup_message_loop(self):
         """Sets things up for the message loop to start.
@@ -480,7 +507,14 @@ def create_commandline_switches(args):
     if args.proxy_auto_detect:
         rv["proxy_auto_detect"] = ""
 
-    print(rv)
+        # GPU settings
+    rv["use-gl"] = "Desktop"  # Using OpenGL for GPU acceleration swiftshader
+    rv["enable-webgl"] = "" 
+    rv["no-sandbox"] = ""
+    #rv["disable-gpu-blacklist"] = ""
+    rv["enable-gpu-rasterization"] = ""
+    rv["enable-zero-copy"] = ""
+
     return rv
 
 

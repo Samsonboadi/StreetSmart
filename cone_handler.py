@@ -4,7 +4,7 @@ import logging
 from qgis.PyQt.QtGui import QColor  # pylint: disable=import-error
 from qgis.core import (  # pylint: disable=import-error
     QgsPointXY, QgsGeometry, QgsProject, QgsCoordinateTransform,
-    QgsCoordinateReferenceSystem)
+    QgsCoordinateReferenceSystem,Qgis,QgsWkbTypes)
 from qgis.gui import (  # pylint: disable=import-error
     QgsRubberBand)
 try:
@@ -125,7 +125,10 @@ class ConeHandler():
                                                             point.y()))
 
         # Create and draw cone
-        cone = QgsRubberBand(self.iface.mapCanvas(), True)
+        # For polygon
+
+        #cone = QgsRubberBand(self.iface.mapCanvas(), Qgis.GeometryType.Polygon)
+        cone = QgsRubberBand(self.iface.mapCanvas(), QgsWkbTypes.PolygonGeometry)
         cone.setToGeometry(cone_geometry, None)
         cone.setColor(color)
         cone.setWidth(CONE_BORDER_WIDTH)
